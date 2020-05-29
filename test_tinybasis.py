@@ -50,9 +50,9 @@ def test_hydrogenic_op(atnum, angqn, grid_basis):
         eext = np.einsum('i,ij,j', evecs[:, i], ext, evecs[:, i])
         assert_allclose(dot, 1, atol=0, rtol=1e-7, err_msg=case)
         assert_allclose(norm, 1, atol=0, rtol=1e-8, err_msg=case)
-        assert_allclose(eext, -factor, atol=0, rtol=1e-5, err_msg=case)
-        assert_allclose(ekin, factor / 2, atol=0, rtol=1e-5, err_msg=case)
-        assert_allclose(evals[i], -factor / 2, atol=0, rtol=3e-6, err_msg=case)
+        assert_allclose(eext, -factor, atol=0, rtol=1.5e-5, err_msg=case)
+        assert_allclose(ekin, factor / 2, atol=0, rtol=2.5e-5, err_msg=case)
+        assert_allclose(evals[i], -factor / 2, atol=0, rtol=6e-6, err_msg=case)
 
 
 def test_integral_regression(num_regression):
