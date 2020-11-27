@@ -130,7 +130,7 @@ def test_tf_grid_exp():
     fnvalsd = grid.derivative(fnvals)
     assert_allclose(grid.integrate(fnvals), 1.0, atol=1e-13, rtol=0)
     assert_allclose(fnvalsa, -fnvals, atol=1e-7, rtol=0)
-    assert_allclose(fnvalsd, -fnvals, atol=1e-7, rtol=0)
+    assert_allclose(fnvalsd, -fnvals, atol=1.5e-7, rtol=0)
 
 
 def test_tf_grid_exp_vectorized():
@@ -145,7 +145,7 @@ def test_tf_grid_exp_vectorized():
     fnsvalsd = grid.derivative(fnsvals)
     assert_allclose(grid.integrate(fnsvals), 1 / exponents, atol=1e-13, rtol=0)
     assert_allclose(fnsvalsa, -fnsvals / exponents[:, np.newaxis], atol=1e-7, rtol=0)
-    assert_allclose(fnsvalsd, -fnsvals * exponents[:, np.newaxis], atol=1e-7, rtol=0)
+    assert_allclose(fnsvalsd, -fnsvals * exponents[:, np.newaxis], atol=1.5e-7, rtol=0)
     fns_other = np.exp(-np.outer([1.1, 1.2, 0.8], grid.points))
     integrals2 = np.array([
         [grid.integrate(fn1 * fn2) for fn2 in fns_other]
@@ -208,7 +208,7 @@ def test_hydrogenic_grid(atnum, angqn, grid_basis):
             ekin += grid.integrate(psi**2 * v_angkin)
         eext = grid.integrate(psi**2 * v_ext)
         assert_allclose(norm, 1, atol=1e-14, rtol=0, err_msg=case)
-        assert_allclose(ekin, factor / 2, atol=4e-11, rtol=0, err_msg=case)
+        assert_allclose(ekin, factor / 2, atol=5.5e-11, rtol=0, err_msg=case)
         assert_allclose(eext, -factor, atol=4e-11, rtol=0, err_msg=case)
 
 

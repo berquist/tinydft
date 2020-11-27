@@ -32,7 +32,7 @@ from test_tinygrid import get_hydrogenic_solutions
 @pytest.mark.parametrize("angqn", [0, 1, 2, 3, 4, 5, 6])
 def test_hydrogenic_op(atnum, angqn, grid_basis):
     grid, basis = grid_basis
-    # Created modified copies of the operators. Do not modificy in place to
+    # Created modified copies of the operators. Do not modify in place to
     # avoid side-effects.
     kin = basis.kin_rad.copy()
     if angqn > 0:
@@ -50,8 +50,8 @@ def test_hydrogenic_op(atnum, angqn, grid_basis):
         eext = np.einsum('i,ij,j', evecs[:, i], ext, evecs[:, i])
         assert_allclose(dot, 1, atol=0, rtol=1e-7, err_msg=case)
         assert_allclose(norm, 1, atol=0, rtol=1e-8, err_msg=case)
-        assert_allclose(eext, -factor, atol=0, rtol=1.5e-5, err_msg=case)
-        assert_allclose(ekin, factor / 2, atol=0, rtol=2.5e-5, err_msg=case)
+        assert_allclose(eext, -factor, atol=0, rtol=2.0e-5, err_msg=case)
+        assert_allclose(ekin, factor / 2, atol=0, rtol=3.5e-5, err_msg=case)
         assert_allclose(evals[i], -factor / 2, atol=0, rtol=6e-6, err_msg=case)
 
 

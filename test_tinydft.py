@@ -45,7 +45,7 @@ def test_poisson(atnum):
     vnum = solve_poisson(grid, rho)
     vann = (1 - aux) / grid.points - alpha * aux / 2
     assert_allclose(vnum[-1], 1.0 / grid.points[-1], atol=1e-11, rtol=0)
-    assert_allclose(vnum, vann, atol=2e-5, rtol=0)
+    assert_allclose(vnum, vann, atol=6.0e-5, rtol=0)
 
 
 def test_interpret_econf1():
