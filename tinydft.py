@@ -71,14 +71,29 @@ def main(atnum: float, atcharge: float):
 
     energies, rho, vhartree, vxc, eps_orbs_u = scf_atom(atnum, occups, grid, basis)
 
+    econf_str = '_'.join(econf.split())
+
     plt.clf()
-    plt.title("Z={:d} Energy={:.5f}".format(atnum, energies[0]))
-    plt.semilogy(grid.points, rho)
-    plt.xlabel("Distance from nucleus")
-    plt.ylabel("Density")
-    plt.ylim(1e-4, rho.max() * 2)
-    plt.xlim(0, 5)
-    plt.savefig("rho_z{:03d}_{}.png".format(atnum, '_'.join(econf.split())))
+    fig, ax = plt.subplots()
+    ax.set_title("Z={:d} Energy={:.5f}".format(atnum, energies[0]))
+    ax.semilogy(grid.points, rho)
+    ax.set_xlabel("Distance from nucleus")
+    ax.set_ylabel("Density")
+    ax.set_ylim(1e-4, rho.max() * 2)
+    ax.set_xlim(0, 5)
+    fig.savefig("rho_z{:03d}_{}.pdf".format(atnum, econf_str), bbox_inches="tight")
+
+    plt.clf()
+    ax.set_title("Z={:d} Energy={:.5f}".format(atnum, energies[0]))
+    x = np.arange(basis.nbasis, dtype=float)
+    for angqn, (orbenergies, orbcoeffs) in eps_orbs_u.items():
+        for i in range(len(orbenergies)):
+            ax.plot(x, orbcoeffs[:, i], label=f"angqn={angqn} orb={i}")
+    ax.set_xlabel("Basis function index")
+    ax.set_ylabel("Coefficient weight")
+    ax.set_xlim(x.min(), x.max())
+    ax.legend(fancybox=True)
+    fig.savefig("orbs_z{:03d}_{}.pdf".format(atnum, econf_str), bbox_inches="tight")
 
 
 # pylint: disable=too-many-statements
