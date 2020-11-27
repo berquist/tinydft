@@ -69,7 +69,7 @@ def main(atnum: float, atcharge: float):
     print("Number of basis functions         {:8d}".format(basis.nbasis))
     print("Condition number of the overlap   {:8.1e}".format(evals_olp[-1] / evals_olp[0]))
 
-    energies, rho = scf_atom(atnum, occups, grid, basis)
+    energies, rho, vhartree, vxc, eps_orbs_u = scf_atom(atnum, occups, grid, basis)
 
     plt.clf()
     plt.title("Z={:d} Energy={:.5f}".format(atnum, energies[0]))
@@ -84,7 +84,7 @@ def main(atnum: float, atcharge: float):
 # pylint: disable=too-many-statements
 def scf_atom(atnum: float, occups: List[List[float]], grid: TransformedGrid,
              basis: Basis, nscf: int = 25, mixing: float = 0.5) \
-        -> Tuple[np.ndarray, np.ndarray]:
+        -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """Perform a self-consistent field atomic calculation.
 
     Parameters
@@ -108,7 +108,13 @@ def scf_atom(atnum: float, occups: List[List[float]], grid: TransformedGrid,
         The atomic energy and its contributions.
     rho
         The electron density on the grid points.
-
+    vhartree
+        The Hartree potential.
+    vxc
+        The exchange-correlation potential.
+    eps_orbs_u
+        Orbital energy and coefficient tuples indexed by angular momentum
+        quantum number.
     """
     # Fock operators from previous iteration, used for mixing.
     focks_old = []
@@ -198,7 +204,7 @@ def scf_atom(atnum: float, occups: List[List[float]], grid: TransformedGrid,
 
     energies = np.array([energy, energy_kin_rad, energy_kin_ang, energy_hartree,
                          energy_xc, energy_ext])
-    return energies, rho
+    return energies, rho, vhartree, vxc, eps_orbs_u
 
 
 def setup_grid(npoint: int = 256) -> TransformedGrid:
